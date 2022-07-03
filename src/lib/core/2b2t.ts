@@ -168,5 +168,7 @@ export default class TwoBTwo extends EventEmitter {
         }
       }
     }, 10 * 1000);
+
+    this.reconnecting = false;
   }
 }
