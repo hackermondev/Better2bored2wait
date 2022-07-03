@@ -11,8 +11,10 @@
 2. Run executable
 
 ### Features
-- [x] Anti-Afk-Disconnection system
-- [X] Automatic server reconnection 
-- [X] Supports Mojang & Microsoft accounts
+- Anti-Afk-Disconnection system
+- Automatic server reconnection 
+- Discord webhooks notification system
+- Supports Mojang & Microsoft accounts
+- Support newer versions of Minecrafts (coming soon) 
 
 Want to suggest any features? Feel free to create a [issue](https://github.com/hackermondev/Better2bored2wait/releases)!
