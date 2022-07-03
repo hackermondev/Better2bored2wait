@@ -14,7 +14,6 @@ import AntiAFK from 'mineflayer-antiafk';
 let LOGGER_WEBHOOK = null;
 if (process.env['LOGGER_WEBHOOK'])
   LOGGER_WEBHOOK = new Webhook({ url: process.env['LOGGER_WEBHOOK'] });
-console.log(process.env);
 
 import ProxyServer from './ProxyServer';
 import { LoggerExtended } from './logger';
@@ -72,13 +71,12 @@ export default class TwoBTwo extends EventEmitter {
     this._bot.bot.on('title', (title: string) => {
       const data = JSON.parse(title);
       if (data.text && data.text.length > 2) this._lastTitle = data.text;
-      this._logger.debug(`Title:`, data);
+      this._logger.debug(`Title: ${JSON.stringify(data)}`);
     });
 
     this.onDisconnect = this.onDisconnect.bind(this);
     this._bot.bot.on('end', this.onDisconnect);
     this._bot.bot.on('kicked', this.onDisconnect);
-    if (LOGGER_WEBHOOK) this._logger.info(`Logger webhook: ${LOGGER_WEBHOOK}`);
   }
 
   getQueuePosition() {
@@ -126,7 +124,7 @@ export default class TwoBTwo extends EventEmitter {
           `PROXY: Proxying (${meta.name}) packet with length ${rawData.length}`
         );
         if (meta.name == 'keep_alive' || meta.name == 'update_time') {
-          this._logger.warn(`PROXY: Skipping keep_alive packet`);
+          this._logger.warning(`PROXY: Skipping keep_alive packet`);
           return;
         }
 
@@ -134,7 +132,7 @@ export default class TwoBTwo extends EventEmitter {
       });
 
       client.on('end', () => {
-        this._logger.warn(`PROXY: Client ${client.username} disconnected`);
+        this._logger.warning(`PROXY: Client ${client.username} disconnected`);
         this._bot.bot.afk.start();
       });
 
@@ -168,5 +166,7 @@ export default class TwoBTwo extends EventEmitter {
         }
       }
     }, 10 * 1000);
+
+    this.reconnecting = false;
   }
 }
