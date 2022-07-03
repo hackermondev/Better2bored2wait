@@ -16,6 +16,7 @@
     "test": "run-s build test:*",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
+    "test:exebuild": "bash scripts/build-package-test.sh",
     "watch:build": "tsc -p tsconfig.json -w"
   },
   "bin": {
