@@ -24,24 +24,20 @@
   },
   "pkg": {
     "scripts": "build/**/*.js",
-    "targets": [ 
+    "targets": [
       "node16-linux-arm64",
       "node16-win-x64",
-      "node16-linux-arm64"  
+      "node16-linux-arm64"
     ],
-
     "outputPath": "exec/"
   },
-
   "engines": {
     "node": ">=10"
   },
   "dependencies": {
+    "@ptkdev/logger": "^1.8.0",
     "@rob9315/mcproxy": "^0.3.1",
-    "@sapphire/framework": "^2.5.1",
-    "@sapphire/plugin-logger": "^2.2.1",
     "discord-webhook-client": "^0.0.1",
-    "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
     "minecraft-protocol": "^1.35.0",
     "mineflayer": "^4.3.0",
@@ -49,7 +45,6 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "@ava/typescript": "^1.1.1",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
@@ -59,7 +54,6 @@
     "eslint-plugin-functional": "^3.0.2",
     "eslint-plugin-import": "^2.22.0",
     "prettier": "^2.1.1",
-    "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   },
   "prettier": {

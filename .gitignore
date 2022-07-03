@@ -1,6 +1,6 @@
 diff
 .env
-exec/*
+exec
 .idea/*
 .nyc_output
 build
