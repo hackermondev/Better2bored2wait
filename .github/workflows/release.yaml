@@ -1,0 +1,42 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    branches:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Build code
+        run: |
+          npm install
+          npm run build:tsc
+
+      - name: Compile to executable
+        run: |
+          npm run build:exe
+        
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+  
+      - name: Create Latest Release
+        id: create_archive_release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: ${{ steps.extract_branch.outputs.branch }}
+          title: <PENDING NAME>
+          body: |
+            Automatic release by Github Actions. Pending review by a human.
+          prerelease: true
+          files: |
+            exec/**/*
