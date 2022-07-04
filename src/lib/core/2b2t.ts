@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
@@ -89,8 +90,11 @@ export default class TwoBTwo extends EventEmitter {
     return queue;
   }
 
-  onDisconnect(reason: string) {
+  async onDisconnect(reason: string) {
     this._logger.error(`Disconnected: ${reason}`);
+    try {
+      LOGGER_WEBHOOK?.send(`Disconnected: ${reason}`);
+    } catch (err) {}
 
     if (!this.reconnecting) {
       this.reconnecting = true;
@@ -98,6 +102,7 @@ export default class TwoBTwo extends EventEmitter {
       // eslint-disable-next-line functional/immutable-data
       this.proxyServer._server.motd = `DISCONNECTED | null.exe`;
 
+      await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
       this.init();
       this.start();
     }
@@ -117,6 +122,12 @@ export default class TwoBTwo extends EventEmitter {
     this._bot.bot.afk.start();
     this.proxyServer._server.on('login', (client: ServerClient) => {
       this._logger.info(`PROXY: Client ${client.username} connected`);
+      if (client.username != this._bot.bot.username) {
+        this._logger.warning(
+          `PROXY: Client ${client.username} tried to connect but not allowed`
+        );
+        return client.end('bruh moment');
+      }
 
       this._bot.bot.afk.stop();
       client.on('packet', (_, meta, rawData) => {
@@ -149,7 +160,9 @@ export default class TwoBTwo extends EventEmitter {
         return this._logger.error(`Unable to get queue position`);
       if (position > 2) {
         if (lastPosition != position) {
-          LOGGER_WEBHOOK?.send(`Queue position: ${position}, ETA: unknown`);
+          try {
+            LOGGER_WEBHOOK?.send(`Queue position: ${position}, ETA: unknown`);
+          } catch (err) {}
         }
 
         // eslint-disable-next-line functional/immutable-data
@@ -160,9 +173,11 @@ export default class TwoBTwo extends EventEmitter {
         if (this.inQueue) {
           this._logger.info(`Queue is done. User is ready to join the game.`);
           this.inQueue = false;
-          LOGGER_WEBHOOK?.send(
-            `@everyone\nQueue is done. User is ready to join the game.`
-          );
+          try {
+            LOGGER_WEBHOOK?.send(
+              `@everyone\nQueue is done. User is ready to join the game.`
+            );
+          } catch (err) {}
         }
       }
     }, 10 * 1000);
