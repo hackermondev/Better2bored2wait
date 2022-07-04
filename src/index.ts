@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
-if(process.pkg) {
+if (process.pkg) {
   dotenv.config({ path: path.join(process.cwd(), '.env') });
 } else {
   dotenv.config({ path: path.join(__dirname, '../../.env') });
