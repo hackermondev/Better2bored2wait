@@ -97,6 +97,7 @@ export default class TwoBTwo extends EventEmitter {
     } catch (err) {}
 
     if (!this.reconnecting) {
+      this.inQueue = true;
       this.reconnecting = true;
 
       // eslint-disable-next-line functional/immutable-data
